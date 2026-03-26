@@ -1,0 +1,168 @@
+:root{
+  --cream:#f3efe6;
+  --green:#1D5C63;
+  --dark:#111318;
+  --red:#d32f2f;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:system-ui;
+  color:var(--dark);
+  background:
+    linear-gradient(45deg,
+      rgba(29,92,99,.35) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgba(29,92,99,.35) 75%,
+      rgba(29,92,99,.35)
+    ) 0 0/32px 32px,
+    linear-gradient(45deg,
+      rgba(29,92,99,.35) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgba(29,92,99,.35) 75%,
+      rgba(29,92,99,.35)
+    ) 16px 16px/32px 32px,
+    var(--cream);
+}
+
+.wrap{max-width:1100px;margin:0 auto;padding:28px 16px}
+
+.top{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+}
+
+.title{
+  margin:0;
+  font-size:75px;
+  font-weight:900;
+  letter-spacing:4px;
+  color:var(--green);
+}
+
+.billboard{
+  width:min(380px,86vw);
+  height:240px;
+  border-radius:20px;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 14px 30px rgba(0,0,0,.25);
+}
+
+#billboardImg{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+
+.card{
+  height:240px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  background:rgba(255,255,255,.6);
+}
+
+.menu-img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.order-btn{
+  position:fixed;
+  top:16px;
+  right:16px;
+  padding:12px 18px;
+  background:var(--green);
+  font-weight:900;
+  border-radius:14px;
+  text-decoration:none;
+  color:black;
+}
+
+@media(max-width:520px){
+  .grid{grid-template-columns:1fr}
+  .title{font-size:48px}
+}
+.map{
+  width:100%;
+  height:320px;          /* AQUESTA ÉS LA CLAU */
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+}
+
+.map iframe{
+  width:100%;
+  height:100%;
+  border:0;
+}
+
+/* ESQUIADOR QUE CREUA LA PANTALLA */
+.ski-cross{
+  position:fixed;
+  width:70px;                 /* petit, com volies */
+  top:-80px;
+  left:-80px;
+  z-index:999;
+  pointer-events:none;
+  animation: skiCross 6s linear infinite;
+}
+
+/* moviment diagonal */
+@keyframes skiCross{
+  0%{
+    transform: translate(0,0) rotate(-15deg);
+    opacity:0;
+  }
+  10%{
+    opacity:1;
+  }
+  100%{
+    transform: translate(120vw,120vh) rotate(15deg);
+    opacity:0;
+  }
+}
+
+/* no en mòbil */
+@media(max-width:768px){
+  .ski-cross{ display:none; }
+}
+
+/* ESQUIADOR QUE CREUA LA PANTALLA (blindat) */
+.ski-cross{
+  position: fixed !important;
+  width: 70px !important;
+  height: auto !important;
+  left: -90px !important;     /* comença fora pantalla */
+  top: 15vh !important;       /* alçada d’inici */
+  z-index: 9999 !important;
+  pointer-events: none !important;
+  display: block !important;
+  animation: skiCross 6s linear infinite !important;
+}
+
+@keyframes skiCross{
+  0%   { transform: translate(0,0) rotate(-15deg); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translate(140vw, 110vh) rotate(15deg); opacity: 0; }
+}
+
+
