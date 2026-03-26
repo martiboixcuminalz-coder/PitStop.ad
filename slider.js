@@ -25,7 +25,7 @@ function initBillboard() {
     img.src = fallbackImage;
   });
 
-  const showNextFrame = () => {
+  function showNextFrame() {
     img.classList.add("out");
 
     window.setTimeout(() => {
@@ -35,17 +35,17 @@ function initBillboard() {
       img.classList.remove("out");
       img.classList.add("in");
 
-      void img.offsetWidth; // força reflow per reiniciar animació
+      void img.offsetWidth; // reinicia animació
       img.classList.remove("in");
 
       timeoutId = window.setTimeout(showNextFrame, intervalMs);
     }, transitionMs);
-  };
+  }
 
   timeoutId = window.setTimeout(showNextFrame, intervalMs);
 
   window.addEventListener("beforeunload", () => {
-    if (timeoutId) {
+    if (timeoutId !== null) {
       clearTimeout(timeoutId);
     }
   });
@@ -56,6 +56,7 @@ function initBillboard() {
 ========================= */
 function initReviews() {
   const STORAGE_KEY = "pitstop_reviews";
+  const MAX_REVIEWS = 20;
 
   const form = document.getElementById("reviewForm");
   const reviewsList = document.getElementById("reviewsList");
@@ -72,7 +73,8 @@ function initReviews() {
   function loadReviews() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [];
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
       console.error("Error carregant ressenyes:", error);
       return [];
@@ -127,12 +129,21 @@ function initReviews() {
       ratingInput.value = value;
       updateStars(value);
     });
+
+    star.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        const value = Number(star.dataset.value) || 0;
+        ratingInput.value = value;
+        updateStars(value);
+      }
+    });
   });
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const name = nameInput.value.trim();
+    const name = nameInput.value.trim().slice(0, 30);
     const rating = Number(ratingInput.value);
 
     if (!name) {
@@ -151,6 +162,10 @@ function initReviews() {
       rating,
       ts: Date.now(),
     });
+
+    if (reviews.length > MAX_REVIEWS) {
+      reviews = reviews.slice(-MAX_REVIEWS);
+    }
 
     saveReviews();
     form.reset();
