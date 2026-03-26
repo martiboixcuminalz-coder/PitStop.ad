@@ -1,168 +1,268 @@
 :root{
-  --cream:#f3efe6;
-  --green:#1D5C63;
-  --dark:#111318;
-  --red:#d32f2f;
+  --cream: #f5f1e8;
+  --green: #1d5c63;
+  --green-dark: #15474d;
+  --dark: #111318;
+  --red: #d32f2f;
+  --white: #ffffff;
+  --shadow-soft: 0 10px 24px rgba(0,0,0,.12);
+  --shadow-medium: 0 16px 36px rgba(0,0,0,.18);
+  --radius: 18px;
+  --radius-lg: 24px;
+  --transition: 0.28s ease;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing: border-box;
+}
+
+html{
+  scroll-behavior: smooth;
+}
 
 body{
-  margin:0;
-  font-family:system-ui;
-  color:var(--dark);
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--dark);
   background:
     linear-gradient(45deg,
-      rgba(29,92,99,.35) 25%,
+      rgba(29,92,99,.08) 25%,
       transparent 25%,
       transparent 75%,
-      rgba(29,92,99,.35) 75%,
-      rgba(29,92,99,.35)
-    ) 0 0/32px 32px,
+      rgba(29,92,99,.08) 75%,
+      rgba(29,92,99,.08)
+    ) 0 0 / 32px 32px,
     linear-gradient(45deg,
-      rgba(29,92,99,.35) 25%,
+      rgba(29,92,99,.08) 25%,
       transparent 25%,
       transparent 75%,
-      rgba(29,92,99,.35) 75%,
-      rgba(29,92,99,.35)
-    ) 16px 16px/32px 32px,
-    var(--cream);
+      rgba(29,92,99,.08) 75%,
+      rgba(29,92,99,.08)
+    ) 16px 16px / 32px 32px,
+    linear-gradient(180deg, #faf7f0 0%, var(--cream) 100%);
+  line-height: 1.5;
 }
 
-.wrap{max-width:1100px;margin:0 auto;padding:28px 16px}
+/* CONTENIDOR GENERAL */
+.wrap{
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
 
+/* HEADER / HERO */
 .top{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  margin-bottom: 28px;
 }
 
 .title{
-  margin:0;
-  font-size:75px;
-  font-weight:900;
-  letter-spacing:4px;
-  color:var(--green);
+  margin: 0;
+  font-size: clamp(40px, 7vw, 76px);
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: var(--green);
+  line-height: 0.95;
+  text-transform: uppercase;
+  text-shadow: 0 2px 0 rgba(255,255,255,.35);
 }
 
+/* IMATGE PRINCIPAL */
 .billboard{
-  width:min(380px,86vw);
-  height:240px;
-  border-radius:20px;
-  background:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 14px 30px rgba(0,0,0,.25);
+  width: min(420px, 88vw);
+  min-height: 250px;
+  border-radius: var(--radius-lg);
+  background: rgba(255,255,255,.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-medium);
+  border: 1px solid rgba(255,255,255,.65);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.billboard:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 20px 44px rgba(0,0,0,.20);
 }
 
 #billboardImg{
-  width:100%;
-  height:100%;
-  object-fit:contain;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
+/* GRAELLA */
 .grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 28px;
 }
 
+/* TARGETES */
 .card{
-  height:240px;
-  border-radius:18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:800;
-  background:rgba(255,255,255,.6);
+  min-height: 240px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  background: rgba(255,255,255,.78);
+  border: 1px solid rgba(255,255,255,.7);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    background var(--transition);
+}
+
+.card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 18px 34px rgba(0,0,0,.16);
+  background: rgba(255,255,255,.92);
 }
 
 .menu-img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
+/* BOTÓ FIX */
 .order-btn{
-  position:fixed;
-  top:16px;
-  right:16px;
-  padding:12px 18px;
-  background:var(--green);
-  font-weight:900;
-  border-radius:14px;
-  text-decoration:none;
-  color:black;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+  color: var(--white);
+  font-weight: 800;
+  border-radius: 14px;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(29,92,99,.28);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    filter var(--transition);
 }
 
-@media(max-width:520px){
-  .grid{grid-template-columns:1fr}
-  .title{font-size:48px}
+.order-btn:hover{
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 30px rgba(29,92,99,.34);
+  filter: brightness(1.04);
 }
+
+.order-btn:active{
+  transform: translateY(0) scale(.99);
+}
+
+/* MAPA */
 .map{
-  width:100%;
-  height:320px;          /* AQUESTA ÉS LA CLAU */
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 10px 24px rgba(0,0,0,.25);
+  width: 100%;
+  height: 320px;
+  margin-top: 28px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-medium);
+  border: 1px solid rgba(255,255,255,.65);
+  background: #ddd;
 }
 
 .map iframe{
-  width:100%;
-  height:100%;
-  border:0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
 }
 
-/* ESQUIADOR QUE CREUA LA PANTALLA */
+/* ESQUIADOR */
 .ski-cross{
-  position:fixed;
-  width:70px;                 /* petit, com volies */
-  top:-80px;
-  left:-80px;
-  z-index:999;
-  pointer-events:none;
+  position: fixed;
+  width: 70px;
+  height: auto;
+  left: -90px;
+  top: 15vh;
+  z-index: 9999;
+  pointer-events: none;
   animation: skiCross 6s linear infinite;
+  opacity: 0;
+  will-change: transform, opacity;
 }
 
-/* moviment diagonal */
 @keyframes skiCross{
   0%{
-    transform: translate(0,0) rotate(-15deg);
-    opacity:0;
+    transform: translate(0, 0) rotate(-15deg);
+    opacity: 0;
   }
   10%{
-    opacity:1;
+    opacity: 1;
   }
   100%{
-    transform: translate(120vw,120vh) rotate(15deg);
-    opacity:0;
+    transform: translate(140vw, 110vh) rotate(15deg);
+    opacity: 0;
   }
 }
 
-/* no en mòbil */
-@media(max-width:768px){
-  .ski-cross{ display:none; }
+/* RESPONSIVE */
+@media (max-width: 992px){
+  .grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card{
+    min-height: 220px;
+  }
 }
 
-/* ESQUIADOR QUE CREUA LA PANTALLA (blindat) */
-.ski-cross{
-  position: fixed !important;
-  width: 70px !important;
-  height: auto !important;
-  left: -90px !important;     /* comença fora pantalla */
-  top: 15vh !important;       /* alçada d’inici */
-  z-index: 9999 !important;
-  pointer-events: none !important;
-  display: block !important;
-  animation: skiCross 6s linear infinite !important;
+@media (max-width: 768px){
+  .wrap{
+    padding: 24px 16px;
+  }
+
+  .ski-cross{
+    display: none;
+  }
+
+  .map{
+    height: 280px;
+  }
 }
 
-@keyframes skiCross{
-  0%   { transform: translate(0,0) rotate(-15deg); opacity: 0; }
-  10%  { opacity: 1; }
-  100% { transform: translate(140vw, 110vh) rotate(15deg); opacity: 0; }
+@media (max-width: 520px){
+  .grid{
+    grid-template-columns: 1fr;
+  }
+
+  .title{
+    letter-spacing: 1.5px;
+  }
+
+  .billboard{
+    min-height: 220px;
+    border-radius: 20px;
+  }
+
+  .card{
+    min-height: 200px;
+  }
+
+  .order-btn{
+    top: auto;
+    right: 14px;
+    bottom: 14px;
+    padding: 12px 18px;
+    border-radius: 999px;
+  }
 }
-
-
