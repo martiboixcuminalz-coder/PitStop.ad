@@ -1,94 +1,163 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ====== BILLBOARD (1 sola imatge) ======
+  initBillboard();
+  initReviews();
+});
+
+/* =========================
+   BILLBOARD ROTATIU
+========================= */
+function initBillboard() {
   const img = document.getElementById("billboardImg");
-  if (img) {
-    const frames = ["logo.jpg", "foto1.jpg", "foto2.jpg", "foto3.jpg"];
-    let i = 0;
+  if (!img) return;
 
-    const intervalMs = 5000;
-    const t = 550; // 0.55s del CSS
+  const frames = ["logo.jpg", "foto1.jpg", "foto2.jpg", "foto3.jpg"];
+  const fallbackImage = "logo.jpg";
+  const intervalMs = 5000;
+  const transitionMs = 550;
 
-    img.classList.remove("out", "in");
-    img.src = frames[i];
+  let currentIndex = 0;
+  let timeoutId = null;
 
-    img.addEventListener("error", () => {
-      img.src = "logo.jpg";
-    });
+  img.classList.remove("out", "in");
+  img.src = frames[currentIndex];
 
-    const step = () => {
-      img.classList.add("out");
+  img.addEventListener("error", () => {
+    img.src = fallbackImage;
+  });
 
-      setTimeout(() => {
-        i = (i + 1) % frames.length;
+  const showNextFrame = () => {
+    img.classList.add("out");
 
-        img.classList.remove("out");
-        img.classList.add("in");
-        img.src = frames[i];
+    window.setTimeout(() => {
+      currentIndex = (currentIndex + 1) % frames.length;
+      img.src = frames[currentIndex];
 
-        void img.offsetWidth; // reflow
-        img.classList.remove("in");
+      img.classList.remove("out");
+      img.classList.add("in");
 
-        setTimeout(step, intervalMs);
-      }, t);
-    };
+      void img.offsetWidth; // força reflow per reiniciar animació
+      img.classList.remove("in");
 
-    setTimeout(step, intervalMs);
-  }
+      timeoutId = window.setTimeout(showNextFrame, intervalMs);
+    }, transitionMs);
+  };
 
-  // ====== RESSENYES (localStorage) ======
+  timeoutId = window.setTimeout(showNextFrame, intervalMs);
+
+  window.addEventListener("beforeunload", () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+  });
+}
+
+/* =========================
+   RESSENYES AMB LOCALSTORAGE
+========================= */
+function initReviews() {
   const STORAGE_KEY = "pitstop_reviews";
 
   const form = document.getElementById("reviewForm");
   const reviewsList = document.getElementById("reviewsList");
   const stars = document.querySelectorAll(".stars span");
   const ratingInput = document.getElementById("rating");
+  const nameInput = document.getElementById("name");
 
-  if (form && reviewsList && ratingInput && stars.length) {
-    let reviews = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-    const renderReviews = () => {
-      reviewsList.innerHTML = "";
-      // últimes primer
-      [...reviews].slice().reverse().forEach(r => {
-        const div = document.createElement("div");
-        div.className = "review";
-        const rating = Math.max(1, Math.min(5, Number(r.rating) || 0));
-        div.innerHTML = `
-          <strong>${r.name}</strong>
-          ${"★".repeat(rating)}${"☆".repeat(5 - rating)}
-        `;
-        reviewsList.appendChild(div);
-      });
-    };
-
-    stars.forEach(star => {
-      star.addEventListener("click", () => {
-        const value = star.dataset.value;
-        ratingInput.value = value;
-        stars.forEach(s => s.classList.toggle("active", s.dataset.value <= value));
-      });
-    });
-
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-
-      const nameEl = document.getElementById("name");
-      const name = (nameEl?.value || "").trim();
-      const rating = ratingInput.value;
-
-      if (!name) return alert("Escriu el teu nom");
-      if (!rating || rating === "0") return alert("Selecciona estrelles");
-
-      reviews.push({ name, rating, ts: Date.now() });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
-
-      form.reset();
-      ratingInput.value = 0;
-      stars.forEach(s => s.classList.remove("active"));
-
-      renderReviews();
-    });
-
-    renderReviews();
+  if (!form || !reviewsList || !ratingInput || !nameInput || stars.length === 0) {
+    return;
   }
-});
+
+  let reviews = loadReviews();
+
+  function loadReviews() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error("Error carregant ressenyes:", error);
+      return [];
+    }
+  }
+
+  function saveReviews() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
+    } catch (error) {
+      console.error("Error guardant ressenyes:", error);
+    }
+  }
+
+  function createStars(rating) {
+    const safeRating = Math.max(1, Math.min(5, Number(rating) || 0));
+    return `${"★".repeat(safeRating)}${"☆".repeat(5 - safeRating)}`;
+  }
+
+  function renderReviews() {
+    reviewsList.innerHTML = "";
+
+    const orderedReviews = [...reviews].reverse();
+
+    orderedReviews.forEach((review) => {
+      const reviewItem = document.createElement("div");
+      reviewItem.className = "review";
+
+      const safeName = document.createElement("strong");
+      safeName.textContent = review.name;
+
+      const ratingText = document.createElement("span");
+      ratingText.textContent = ` ${createStars(review.rating)}`;
+
+      reviewItem.appendChild(safeName);
+      reviewItem.appendChild(ratingText);
+
+      reviewsList.appendChild(reviewItem);
+    });
+  }
+
+  function updateStars(selectedValue) {
+    stars.forEach((star) => {
+      const starValue = Number(star.dataset.value);
+      star.classList.toggle("active", starValue <= selectedValue);
+    });
+  }
+
+  stars.forEach((star) => {
+    star.addEventListener("click", () => {
+      const value = Number(star.dataset.value) || 0;
+      ratingInput.value = value;
+      updateStars(value);
+    });
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const name = nameInput.value.trim();
+    const rating = Number(ratingInput.value);
+
+    if (!name) {
+      alert("Escriu el teu nom");
+      nameInput.focus();
+      return;
+    }
+
+    if (!rating || rating < 1 || rating > 5) {
+      alert("Selecciona estrelles");
+      return;
+    }
+
+    reviews.push({
+      name,
+      rating,
+      ts: Date.now(),
+    });
+
+    saveReviews();
+    form.reset();
+    ratingInput.value = 0;
+    updateStars(0);
+    renderReviews();
+  });
+
+  renderReviews();
+}
