@@ -3,13 +3,116 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Demana ja! – PitStop</title>
+  <title>Demana ja! | PitStop</title>
+  <meta name="description" content="Fes la teva comanda a PitStop de manera ràpida i senzilla. Tria el teu menú i contacta amb nosaltres.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="wrap">
-    <h1 class="title">Demana ja!</h1>
-    <p>Aquí aniran les hamburgueses i el sistema de comanda.</p>
+  <main class="wrap order-page">
+    <header class="order-hero">
+      <p class="order-kicker">Comandes PitStop</p>
+      <h1 class="title">DEMANA JA!</h1>
+      <p class="subtitle">
+        Tria la teva opció preferida i fes la comanda de forma ràpida. 
+        Properament també hi haurà pagament digital integrat.
+      </p>
+    </header>
+
+    <section class="order-info">
+      <div class="info-box">
+        <h2>Com funciona</h2>
+        <ol>
+          <li>Escull el producte o menú que vols.</li>
+          <li>Prem el botó de comanda.</li>
+          <li>Ens contactes per WhatsApp i et confirmem la preparació.</li>
+        </ol>
+      </div>
+
+      <div class="info-box notice-box">
+        <h2>Pagament</h2>
+        <p>
+          Actualment la comanda es gestiona de forma directa.
+          La passarel·la de pagament digital s’afegirà més endavant.
+        </p>
+      </div>
+    </section>
+
+    <section class="order-grid" aria-label="Opcions de comanda">
+      <article class="product-card">
+        <div class="product-image-wrap">
+          <img src="menu-smash.jpg" alt="Burger 1" class="menu-img">
+        </div>
+        <div class="product-content">
+          <h3>Burger 1</h3>
+          <p>Hamburguesa principal de la casa, sabor intens i preparada al moment.</p>
+          <a
+            class="product-btn"
+            href="https://wa.me/376000000?text=Hola%20PitStop%2C%20vull%20demanar%20Burger%201."
+            target="_blank"
+            rel="noopener">
+            Demanar per WhatsApp
+          </a>
+        </div>
+      </article>
+
+      <article class="product-card">
+        <div class="product-image-wrap">
+          <img src="menu-normal.jpg" alt="Burger 2" class="menu-img">
+        </div>
+        <div class="product-content">
+          <h3>Burger 2</h3>
+          <p>Opció clàssica i equilibrada, ideal per una comanda ràpida i segura.</p>
+          <a
+            class="product-btn"
+            href="https://wa.me/376000000?text=Hola%20PitStop%2C%20vull%20demanar%20Burger%202."
+            target="_blank"
+            rel="noopener">
+            Demanar per WhatsApp
+          </a>
+        </div>
+      </article>
+
+      <article class="product-card">
+        <div class="product-image-wrap">
+          <img src="menu-smash.jpg" alt="Menú Smash" class="menu-img">
+        </div>
+        <div class="product-content">
+          <h3>Menú Smash</h3>
+          <p>Versió completa amb menú preparat per a qui vol una opció més contundent.</p>
+          <a
+            class="product-btn"
+            href="https://wa.me/376000000?text=Hola%20PitStop%2C%20vull%20demanar%20el%20Men%C3%BA%20Smash."
+            target="_blank"
+            rel="noopener">
+            Demanar per WhatsApp
+          </a>
+        </div>
+      </article>
+
+      <article class="product-card">
+        <div class="product-image-wrap">
+          <img src="menu-normal.jpg" alt="Menú Normal" class="menu-img">
+        </div>
+        <div class="product-content">
+          <h3>Menú Normal</h3>
+          <p>Opció senzilla, directa i molt fàcil de demanar per una pausa ràpida.</p>
+          <a
+            class="product-btn"
+            href="https://wa.me/376000000?text=Hola%20PitStop%2C%20vull%20demanar%20el%20Men%C3%BA%20Normal."
+            target="_blank"
+            rel="noopener">
+            Demanar per WhatsApp
+          </a>
+        </div>
+      </article>
+    </section>
+
+    <section class="order-footer-note">
+      <p>
+        Si tens dubtes sobre ingredients, disponibilitat o recollida, contacta amb nosaltres directament abans de confirmar la comanda.
+      </p>
+      <a href="index.html" class="back-link">← Tornar a la pàgina principal</a>
+    </section>
   </main>
 </body>
 </html>
